@@ -1,10 +1,11 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { login } from "../api/login";
+import { register } from "../api/login";
 
-export default function LoginPage() {
+export default function RegisterPage() {
   const navigate = useNavigate();
   const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
@@ -14,13 +15,11 @@ export default function LoginPage() {
     setError("");
     setLoading(true);
     try {
-      const uname = name.trim();
-      const user = await login(uname, password);
+      const user = await register(name, email, password);
       localStorage.setItem("user", JSON.stringify(user));
-      // Use hard navigation to ensure app reloads with new auth state
-      window.location.replace('/dashboard');
+      navigate("/dashboard");
     } catch (err) {
-      setError(err.response?.data?.message || "Invalid credentials");
+      setError(err.response?.data?.message || "Registration failed");
     } finally {
       setLoading(false);
     }
@@ -29,10 +28,10 @@ export default function LoginPage() {
   return (
     <div className="container">
       <div className="page-content" style={{ display: 'flex', justifyContent: 'center' }}>
-        <div className="card" style={{ width: '100%', maxWidth: 420 }}>
+        <div className="card" style={{ width: '100%', maxWidth: 480 }}>
           <div style={{ textAlign: 'center', marginBottom: '1.5rem' }}>
-            <h2 style={{ marginBottom: 0 }}>QuickTill</h2>
-            <div style={{ color: 'var(--text-secondary)' }}>Sign in to continue</div>
+            <h2 style={{ marginBottom: 0 }}>Create Account</h2>
+            <div style={{ color: 'var(--text-secondary)' }}>Register to start using QuickTill</div>
           </div>
 
           {error && (
@@ -47,19 +46,27 @@ export default function LoginPage() {
 
           <form onSubmit={handleSubmit}>
             <div className="form-group">
-              <label className="form-label">Username</label>
+              <label className="form-label">Name</label>
               <input
+                type="text"
                 className="form-input"
-                placeholder="Your username"
+                placeholder="Your name"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
                 required
                 autoFocus
-                autoCapitalize="none"
-                autoCorrect="off"
-                spellCheck={false}
-                autoComplete="username"
-                inputMode="text"
+              />
+            </div>
+
+            <div className="form-group">
+              <label className="form-label">Email</label>
+              <input
+                type="email"
+                className="form-input"
+                placeholder="you@example.com"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                required
               />
             </div>
 
@@ -72,7 +79,6 @@ export default function LoginPage() {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 required
-                autoComplete="current-password"
               />
             </div>
 
@@ -82,21 +88,11 @@ export default function LoginPage() {
               style={{ width: '100%' }}
               disabled={loading}
             >
-              {loading ? "Signing in..." : "Sign In"}
+              {loading ? "Creating account..." : "Create Account"}
             </button>
-
-            <div style={{ textAlign: 'center', marginTop: '0.75rem' }}>
-              <button
-                type="button"
-                className="btn"
-                onClick={() => navigate('/register')}
-              >
-                Create an account
-              </button>
-            </div>
           </form>
         </div>
       </div>
     </div>
   );
-}
+} 

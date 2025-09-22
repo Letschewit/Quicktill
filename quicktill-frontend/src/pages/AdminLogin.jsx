@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { login } from "../api/login";
 
-export default function LoginPage() {
+export default function AdminLoginPage() {
   const navigate = useNavigate();
   const [name, setName] = useState("");
   const [password, setPassword] = useState("");
@@ -16,8 +16,13 @@ export default function LoginPage() {
     try {
       const uname = name.trim();
       const user = await login(uname, password);
+      if (user.role !== "admin") {
+        localStorage.removeItem("token");
+        setError("Admin access required");
+        return;
+      }
       localStorage.setItem("user", JSON.stringify(user));
-      // Use hard navigation to ensure app reloads with new auth state
+      // Hard navigation to ensure state refresh
       window.location.replace('/dashboard');
     } catch (err) {
       setError(err.response?.data?.message || "Invalid credentials");
@@ -31,8 +36,8 @@ export default function LoginPage() {
       <div className="page-content" style={{ display: 'flex', justifyContent: 'center' }}>
         <div className="card" style={{ width: '100%', maxWidth: 420 }}>
           <div style={{ textAlign: 'center', marginBottom: '1.5rem' }}>
-            <h2 style={{ marginBottom: 0 }}>QuickTill</h2>
-            <div style={{ color: 'var(--text-secondary)' }}>Sign in to continue</div>
+            <h2 style={{ marginBottom: 0 }}>QuickTill Admin</h2>
+            <div style={{ color: 'var(--text-secondary)' }}>Sign in as Administrator</div>
           </div>
 
           {error && (
@@ -47,10 +52,10 @@ export default function LoginPage() {
 
           <form onSubmit={handleSubmit}>
             <div className="form-group">
-              <label className="form-label">Username</label>
+              <label className="form-label">Admin Username</label>
               <input
                 className="form-input"
-                placeholder="Your username"
+                placeholder="admin"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
                 required
@@ -84,19 +89,9 @@ export default function LoginPage() {
             >
               {loading ? "Signing in..." : "Sign In"}
             </button>
-
-            <div style={{ textAlign: 'center', marginTop: '0.75rem' }}>
-              <button
-                type="button"
-                className="btn"
-                onClick={() => navigate('/register')}
-              >
-                Create an account
-              </button>
-            </div>
           </form>
         </div>
       </div>
     </div>
   );
-}
+} 

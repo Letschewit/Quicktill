@@ -8,12 +8,29 @@ use Illuminate\Support\Facades\Auth;
 
 class AuthController extends Controller {
     public function login(Request $request) {
-        $credentials = $request->validate([
-            'email' => 'required|email',
+        $data = $request->validate([
+            'name' => 'sometimes|string',
+            'email' => 'sometimes|email',
             'password' => 'required',
         ]);
 
-        if (!Auth::attempt($credentials)) {
+        $attempted = false;
+        $success = false;
+
+        if (!empty($data['name'])) {
+            $attempted = true;
+            $success = Auth::attempt(['name' => $data['name'], 'password' => $data['password']]);
+        }
+        if (!$success && !empty($data['email'])) {
+            $attempted = true;
+            $success = Auth::attempt(['email' => $data['email'], 'password' => $data['password']]);
+        }
+
+        if (!$attempted) {
+            return response()->json(['message' => 'Username or email is required'], 422);
+        }
+
+        if (!$success) {
             return response()->json(['message' => 'Invalid credentials'], 401);
         }
 
@@ -44,5 +61,35 @@ class AuthController extends Controller {
         $user->save();
 
         return response()->json($user);
+    }
+
+    public function destroy(Request $request, User $user) {
+        if ($request->user()->id === $user->id) {
+            return response()->json(['message' => 'You cannot delete your own account'], 422);
+        }
+        $user->delete();
+        return response()->json(['message' => 'User deleted']);
+    }
+
+    public function register(Request $request) {
+        $data = $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|email|unique:users,email',
+            'password' => 'required|string|min:6',
+        ]);
+
+        $user = User::create([
+            'name' => $data['name'],
+            'email' => $data['email'],
+            'password' => $data['password'], // hashed via model cast
+            'role' => 'cashier',
+        ]);
+
+        $token = $user->createToken('api_token')->plainTextToken;
+
+        return response()->json([
+            'user' => $user,
+            'token' => $token,
+        ], 201);
     }
 }
