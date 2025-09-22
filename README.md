@@ -100,7 +100,7 @@ php artisan serve
 ```bash
 cd quicktill-frontend
 npm install
-npm run dev
+npm start
 ```
 
 ---
@@ -148,5 +148,3 @@ npm run test
 Kontribusi terbuka untuk perbaikan bug, penambahan fitur, atau dokumentasi. Silakan fork repository, buat branch baru, dan ajukan pull request.
 
 ---
-
-Mau saya tambahkan juga **contoh endpoint API (backend)** seperti `/api/products`, `/api/transactions`, dll biar dokumentasi ini lebih komplit untuk developer frontend?
