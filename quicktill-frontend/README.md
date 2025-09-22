@@ -1,70 +1,31 @@
-# Getting Started with Create React App
+quicktill-frontend adalah modul antarmuka pengguna dari aplikasi Quicktill POS. Bagian ini dirancang untuk memberikan pengalaman kasir yang sederhana, cepat, dan responsif dalam mendukung aktivitas transaksi sehari-hari.
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Dikembangkan menggunakan JavaScript, HTML, dan CSS, frontend ini berfungsi sebagai lapisan presentasi yang berinteraksi langsung dengan pengguna, sekaligus menjadi penghubung dengan API backend. Dengan pemisahan arsitektur antara frontend dan backend, sistem menjadi lebih modular, mudah dikembangkan, dan fleksibel untuk penyesuaian di berbagai kebutuhan bisnis.
 
-## Available Scripts
+🎯 Tujuan
 
-In the project directory, you can run:
+Menyediakan antarmuka kasir yang ramah pengguna.
 
-### `npm start`
+Mempercepat proses input penjualan dan pengelolaan barang.
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+Menampilkan data penjualan, stok, dan laporan secara real-time.
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+Mendukung sistem peran pengguna (admin & kasir) agar alur kerja lebih terstruktur.
 
-### `npm test`
+🔑 Fitur Frontend
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+Form Transaksi Cepat → untuk input penjualan dan pembayaran.
 
-### `npm run build`
+Dashboard Penjualan → menampilkan ringkasan transaksi harian.
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+Manajemen Produk → daftar produk dengan pencarian dan filter.
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+Pengaturan User → integrasi dengan backend untuk mengatur peran admin/kasir.
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+Desain Responsif → dapat diakses melalui PC, tablet, maupun perangkat mobile.
 
-### `npm run eject`
+⚙️ Integrasi
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+Berkomunikasi dengan quicktill-backend melalui endpoint API.
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+Mendukung arsitektur modular sehingga dapat dikembangkan lebih lanjut menggunakan framework modern (React, Vue, atau lainnya jika diinginkan).
