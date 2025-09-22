@@ -1,7 +1,3 @@
-Baik 👍 saya bantu buatkan **dokumentasi profesional untuk repositori Quicktill**, sudah termasuk daftar **dependencies yang dibutuhkan developer**. Draft ini bisa langsung dijadikan **README.md** di GitHub:
-
----
-
 # 📖 Quicktill POS
 
 **Quicktill** adalah aplikasi **Point of Sales (POS)** berbasis web yang dikembangkan untuk membantu usaha kecil maupun menengah dalam mengelola transaksi, stok barang, pengguna, serta laporan penjualan. Proyek ini terbagi menjadi dua bagian utama:
