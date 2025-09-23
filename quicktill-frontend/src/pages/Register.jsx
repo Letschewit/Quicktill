@@ -1,98 +1,158 @@
-import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { register } from "../api/login";
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { registerApi } from '../api/auth';
 
-export default function RegisterPage() {
+export default function Register() {
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [confirm, setConfirm] = useState('');
+  const [error, setError] = useState('');
   const navigate = useNavigate();
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState("");
 
-  async function handleSubmit(e) {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    setError("");
-    setLoading(true);
-    try {
-      const user = await register(name, email, password);
-      localStorage.setItem("user", JSON.stringify(user));
-      navigate("/dashboard");
-    } catch (err) {
-      setError(err.response?.data?.message || "Registration failed");
-    } finally {
-      setLoading(false);
+    if (!email || !password || !confirm) {
+      setError('Please fill in all fields.');
+      return;
     }
-  }
+    if (password !== confirm) {
+      setError('Passwords do not match.');
+      return;
+    }
+    setError('');
+    try {
+      // Use email prefix as name for demo
+      const name = email.split('@')[0];
+      const resp = await registerApi(name, email, password);
+      localStorage.setItem('user', JSON.stringify(resp.user));
+      localStorage.setItem('token', resp.token);
+      window.location.href = '/dashboard';
+    } catch (err) {
+      setError(err.message || 'Registration failed.');
+    }
+  };
 
   return (
-    <div className="container">
-      <div className="page-content" style={{ display: 'flex', justifyContent: 'center' }}>
-        <div className="card" style={{ width: '100%', maxWidth: 480 }}>
-          <div style={{ textAlign: 'center', marginBottom: '1.5rem' }}>
-            <h2 style={{ marginBottom: 0 }}>Create Account</h2>
-            <div style={{ color: 'var(--text-secondary)' }}>Register to start using QuickTill</div>
-          </div>
-
-          {error && (
-            <div style={{
-              marginBottom: '1rem',
-              padding: '0.75rem 1rem',
-              border: '2px solid var(--primary-black)'
-            }}>
-              {error}
-            </div>
-          )}
-
-          <form onSubmit={handleSubmit}>
-            <div className="form-group">
-              <label className="form-label">Name</label>
-              <input
-                type="text"
-                className="form-input"
-                placeholder="Your name"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-                required
-                autoFocus
-              />
-            </div>
-
-            <div className="form-group">
-              <label className="form-label">Email</label>
-              <input
-                type="email"
-                className="form-input"
-                placeholder="you@example.com"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                required
-              />
-            </div>
-
-            <div className="form-group">
-              <label className="form-label">Password</label>
-              <input
-                type="password"
-                className="form-input"
-                placeholder="••••••••"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                required
-              />
-            </div>
-
-            <button
-              type="submit"
-              className="btn btn-primary"
-              style={{ width: '100%' }}
-              disabled={loading}
-            >
-              {loading ? "Creating account..." : "Create Account"}
-            </button>
-          </form>
+    <div className="auth-page-root">
+      <form className="auth-form" onSubmit={handleSubmit}>
+        <h2>Register</h2>
+        <input
+          type="email"
+          placeholder="Email"
+          value={email}
+          onChange={e => setEmail(e.target.value)}
+          autoFocus
+        />
+        <input
+          type="password"
+          placeholder="Password"
+          value={password}
+          onChange={e => setPassword(e.target.value)}
+        />
+        <input
+          type="password"
+          placeholder="Confirm Password"
+          value={confirm}
+          onChange={e => setConfirm(e.target.value)}
+        />
+        {error && <div className="auth-error">{error}</div>}
+        <button type="submit">Register</button>
+        <div className="auth-switch">
+          Already have an account? <span onClick={() => navigate('/login')}>Login</span>
         </div>
-      </div>
+      </form>
+      <style>{`
+        .auth-page-root {
+          min-height: 100vh;
+          background: #111;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          width: 100vw;
+        }
+        .auth-form {
+          background: #181818;
+          border-radius: 18px;
+          box-shadow: 0 2px 16px rgba(0,0,0,0.13);
+          padding: 2.5rem 2rem 2rem 2rem;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          min-width: 320px;
+          max-width: 420px;
+          width: 100%;
+        }
+        .auth-form h2 {
+          color: #fff;
+          font-size: 2rem;
+          font-weight: 800;
+          margin-bottom: 1.5rem;
+        }
+        .auth-form input {
+          width: 100%;
+          margin-bottom: 1.1rem;
+          padding: 0.8rem 1rem;
+          border-radius: 7px;
+          border: 2px solid #fff;
+          background: #222;
+          color: #fff;
+          font-size: 1.1rem;
+          box-sizing: border-box;
+        }
+        @media (max-width: 900px) {
+          .auth-form {
+            max-width: 98vw;
+            padding: 1.2rem 0.5rem;
+          }
+        }
+        @media (max-width: 600px) {
+          .auth-form {
+            min-width: 98vw;
+            max-width: 98vw;
+            padding: 1.2rem 0.5rem;
+          }
+        }
+        .auth-form input:focus {
+          outline: none;
+          border-color: #2563eb;
+        }
+        .auth-form button {
+          width: 100%;
+          padding: 0.9rem 0;
+          border-radius: 7px;
+          background: #fff;
+          color: #000;
+          font-weight: 700;
+          font-size: 1.1rem;
+          border: 2px solid #fff;
+          margin-bottom: 0.7rem;
+          cursor: pointer;
+          transition: background 0.15s, color 0.15s, border 0.15s;
+        }
+        .auth-form button:hover {
+          background: #000;
+          color: #fff;
+          border: 2px solid #fff;
+        }
+        .auth-error {
+          color: #ff5252;
+          margin-bottom: 1rem;
+          font-size: 1rem;
+        }
+        .auth-switch {
+          color: #bbb;
+          font-size: 0.98rem;
+          margin-top: 0.5rem;
+        }
+        .auth-switch span {
+          color: #2563eb;
+          cursor: pointer;
+          margin-left: 0.3rem;
+        }
+        .auth-switch span:hover {
+          text-decoration: underline;
+        }
+      `}</style>
     </div>
   );
-} 
+}

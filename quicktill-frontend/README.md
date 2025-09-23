@@ -1,31 +1,12 @@
-quicktill-frontend adalah modul antarmuka pengguna dari aplikasi Quicktill POS. Bagian ini dirancang untuk memberikan pengalaman kasir yang sederhana, cepat, dan responsif dalam mendukung aktivitas transaksi sehari-hari.
+# React + Vite
 
-Dikembangkan menggunakan JavaScript, HTML, dan CSS, frontend ini berfungsi sebagai lapisan presentasi yang berinteraksi langsung dengan pengguna, sekaligus menjadi penghubung dengan API backend. Dengan pemisahan arsitektur antara frontend dan backend, sistem menjadi lebih modular, mudah dikembangkan, dan fleksibel untuk penyesuaian di berbagai kebutuhan bisnis.
+This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
 
-🎯 Tujuan
+Currently, two official plugins are available:
 
-Menyediakan antarmuka kasir yang ramah pengguna.
+- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
+- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
 
-Mempercepat proses input penjualan dan pengelolaan barang.
+## Expanding the ESLint configuration
 
-Menampilkan data penjualan, stok, dan laporan secara real-time.
-
-Mendukung sistem peran pengguna (admin & kasir) agar alur kerja lebih terstruktur.
-
-🔑 Fitur Frontend
-
-Form Transaksi Cepat → untuk input penjualan dan pembayaran.
-
-Dashboard Penjualan → menampilkan ringkasan transaksi harian.
-
-Manajemen Produk → daftar produk dengan pencarian dan filter.
-
-Pengaturan User → integrasi dengan backend untuk mengatur peran admin/kasir.
-
-Desain Responsif → dapat diakses melalui PC, tablet, maupun perangkat mobile.
-
-⚙️ Integrasi
-
-Berkomunikasi dengan quicktill-backend melalui endpoint API.
-
-Mendukung arsitektur modular sehingga dapat dikembangkan lebih lanjut menggunakan framework modern (React, Vue, atau lainnya jika diinginkan).
+If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.

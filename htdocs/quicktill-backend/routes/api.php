@@ -19,6 +19,16 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::put('/profile/name', [ProfileController::class, 'updateName']);
     Route::put('/profile/password', [ProfileController::class, 'updatePassword']);
 
+    // Sales endpoints
+    Route::get('/sales/stats', [SalesController::class, 'stats']);
+    Route::apiResource('sales', SalesController::class);
+    
+    // Products endpoints
+    Route::get('/products/categories', [ProductController::class, 'categories']);
+    Route::get('/products/stock-alert', [ProductController::class, 'stockAlert']);
+    Route::post('/products/{product}/adjust-stock', [ProductController::class, 'adjustStock']);
+    Route::apiResource('products', ProductController::class);
+
     // Settings: GET for all authenticated users
     Route::get('/settings', [SettingController::class, 'index']);
 

@@ -1,88 +1,38 @@
 import React from "react";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
-import UsersPage from "./pages/Users";
-import LoginPage from "./pages/Login";
-import POSPage from "./pages/POS";
-import Navigation from "./components/Navigation";
+import UsersPage from "./pages/Users.jsx";
+import LoginPage from "./pages/Login.jsx";
+import POSPage from "./pages/POS.jsx";
+import Navigation from "./components/Navigation.jsx";
 import './App.css';
-import AdminLoginPage from "./pages/AdminLogin";
-import BackOfficePage from "./pages/BackOffice";
-import InventoryPage from "./pages/Inventory";
-import DashboardPage from "./pages/Dashboard";
-import RegisterPage from "./pages/Register";
-import SettingsPage from "./pages/Settings";
+import AdminLoginPage from "./pages/AdminLogin.jsx";
+import BackOfficePage from "./pages/BackOffice.jsx";
+import InventoryPage from "./pages/Inventory.jsx";
+import Dashboard from "./pages/Dashboard.jsx";
+import RegisterPage from "./pages/Register.jsx";
+import SettingsPage from "./pages/Settings.jsx";
+import HomePage from "./pages/HomePage.jsx";
 
 function App() {
   const user = JSON.parse(localStorage.getItem("user") || "null");
+  console.log('Current user:', user);
+  console.log('Current path:', window.location.pathname);
 
   return (
-    <BrowserRouter>
+    <BrowserRouter basename={import.meta.env.BASE_URL}>
       <div className="App">
-        {user && <Navigation />}
+        {user && !['/login', '/register', '/'].includes(window.location.pathname) && <Navigation />}
         <Routes>
-          {/* Public login routes */}
-          <Route path="/login" element={<LoginPage />} />
-          <Route path="/admin/login" element={<AdminLoginPage />} />
-          <Route path="/register" element={<RegisterPage />} />
-
-          {/* Dashboard after login */}
-          <Route
-            path="/dashboard"
-            element={
-              user
-                ? <DashboardPage />
-                : <Navigate to="/login" replace />
-            }
-          />
-
-          {/* Protected admin routes */}
-          <Route
-            path="/users"
-            element={
-              user && user.role === "admin"
-                ? <UsersPage />
-                : <Navigate to="/login" replace />
-            }
-          />
-          <Route
-            path="/backoffice"
-            element={
-              user && user.role === "admin"
-                ? <BackOfficePage />
-                : <Navigate to="/login" replace />
-            }
-          />
-          <Route
-            path="/inventory"
-            element={
-              user && (user.role === "admin" || user.role === "cashier")
-                ? <InventoryPage />
-                : <Navigate to="/login" replace />
-            }
-          />
-
-          {/* Settings & Profile: require login */}
-          <Route
-            path="/settings"
-            element={
-              user
-                ? <SettingsPage />
-                : <Navigate to="/login" replace />
-            }
-          />
-
-          {/* Protected POS route */}
-          <Route
-            path="/pos"
-            element={
-              user && (user.role === "admin" || user.role === "cashier")
-                ? <POSPage />
-                : <Navigate to="/login" replace />
-            }
-          />
-
-          {/* Fallback: redirect anything else to login or dashboard if logged in */}
-          <Route path="*" element={<Navigate to={user ? "/dashboard" : "/login"} replace />} />
+          <Route path="/" element={<HomePage />} />
+          <Route path="/login" element={user ? <Navigate to="/dashboard" replace /> : <LoginPage />} />
+          <Route path="/register" element={user ? <Navigate to="/dashboard" replace /> : <RegisterPage />} />
+          <Route path="/dashboard" element={user ? <Dashboard /> : <Navigate to="/login" replace />} />
+          <Route path="/pos" element={user?.role === "admin" || user?.role === "cashier" ? <POSPage /> : <Navigate to="/login" replace />} />
+          <Route path="/inventory" element={user?.role === "admin" || user?.role === "cashier" ? <InventoryPage /> : <Navigate to="/login" replace />} />
+          <Route path="/settings" element={user ? <SettingsPage /> : <Navigate to="/login" replace />} />
+          <Route path="/users" element={user?.role === "admin" ? <UsersPage /> : <Navigate to="/dashboard" replace />} />
+          <Route path="/backoffice" element={user?.role === "admin" ? <BackOfficePage /> : <Navigate to="/dashboard" replace />} />
+          <Route path="*" element={user ? <Navigate to="/dashboard" replace /> : <Navigate to="/" replace />} />
         </Routes>
       </div>
     </BrowserRouter>
